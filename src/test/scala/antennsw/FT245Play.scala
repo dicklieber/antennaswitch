@@ -37,6 +37,7 @@ object FT245Play extends App with LazyLogging:
 //  print('.')
 //  Thread.sleep(500)
 
+.usbserial - A4002DNF/cu.usbserial-A4002DNF
 
 object DevPlay extends App:
   private val array:  Array[Byte] = Array[Byte](-1.toByte, 1, 1)
