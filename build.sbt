@@ -15,7 +15,13 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-core" % logbackVersion,
   "com.google.inject" % "guice" % "7.0.0",
   "net.codingwell" %% "scala-guice" % "7.0.0",
-  "org.playframework" %% "play-json" % "3.0.2"
+  "org.playframework" %% "play-json" % "3.0.2",
+  //  "com.pi4j" % "pi4j-core" % "1.4",
+  //  "com.pi4j" % "pi4j-gpio-extension" % "1.3",
+
+  "com.pi4j" % "pi4j-core" % "2.5.0",
+  "com.pi4j" % "pi4j-gpio-extension" % "1.3",
+  "com.pi4j" % "pi4j-plugin-pigpio" % "2.5.0",
 )
 
 // Fork a new JVM for 'run' and 'test:run' to avoid JavaFX double initialization problems
