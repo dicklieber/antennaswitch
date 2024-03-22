@@ -1,20 +1,25 @@
 package antennsw
 
-import play.api.libs.json.Json
-
 import scala.collection.immutable.Range.Inclusive
 
 class BandTest extends AntennaSpec {
+  "Band" should {
+    "toString" in {
+      val band = Band(40, Range.Inclusive(7_100_000, 7_250_000, 1))
+      val string = band.toString
+      string mustBe ("40M: 7.1-7.25")
+    }
 
-  "JSON" should {
-    "round trip" in {
-      val range: Range = Range(14_000_000, 14_240_000)
-      val band: Band = Band(20, range)
-      val value1 = Json.toJson(band)
-      val sBand = Json.prettyPrint(value1)
-      val backAgain = Json.parse(sBand).as[Band]
+    "Round trip" in {
+      val band = Band("40M: 7.1-7.25")
+      val sBand = band.toString
+      val backAgain = Band(sBand)
       backAgain mustBe (band)
     }
+    "Illformed" in {
+      val exception = intercept[IllegalArgumentException](Band("crap"))
+      exception mustBe a[IllegalArgumentException]
+      exception.getMessage mustBe """Can't parse "crap"! Expecting something like "40M: 7.1-7.25""""
+    }
   }
-
 }
