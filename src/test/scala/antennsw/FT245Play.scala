@@ -23,7 +23,7 @@ object FT245Play extends App with LazyLogging:
   fifoPort.openPort()
   val iso = fifoPort.isOpen
 
-  private val array:  Array[Byte] = Array[Byte](-1.toByte, 1, 1)
+  private val array:  Array[Byte] = Array[Byte](0xfe.toByte, 0x7f, 1)
   fifoPort.writeBytes(array, 3)
   fifoPort.closePort()
 //  private val outputStream: OutputStream = fifoPort.getOutputStream
@@ -37,11 +37,12 @@ object FT245Play extends App with LazyLogging:
 //  print('.')
 //  Thread.sleep(500)
 
-.usbserial - A4002DNF/cu.usbserial-A4002DNF
+//.usbserial - A4002DNF/cu.usbserial-A4002DNF
 
 object DevPlay extends App:
   private val array:  Array[Byte] = Array[Byte](-1.toByte, 1, 1)
-  val stream = new FileOutputStream("/dev/cu.usbserial-A4002DNF")
+//  val stream = new FileOutputStream("/dev/cu.usbserial-A4002DNF")
+  val stream = new FileOutputStream("/dev/ttyUSB0")
   stream.write(array)
   stream.close()
 

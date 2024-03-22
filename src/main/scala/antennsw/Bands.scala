@@ -1,46 +1,26 @@
 package antennsw
 
-import com.typesafe.config.{Config, ConfigValue}
 import com.typesafe.scalalogging.LazyLogging
-import jakarta.inject.{Inject, Singleton}
-import play.api.libs.json.*
-import scalafx.beans.value
 
-import java.util
-import java.util.Map
-import scala.collection.immutable.Range.Inclusive
-import scala.util.matching.Regex
+import java.io.{PrintWriter, StringWriter}
 
-@Singleton
-class Bands @Inject()(config: Config) extends LazyLogging:
-  //  private val list: Config = config.getConfig("bands")
-  //  private val set: util.Set[Map.Entry[String, ConfigValue]] = list.entrySet()
-  //  private val value: Map.Entry[String, ConfigValue] = set.iterator().next()
-
-  logger.info("hi")
-
-case class Band(meter: Int, range: Range)
-
-object Band:
-  def apply(s:String):Band =
-    throw new NotImplementedError() //todo
-    
-  implicit val fmtBand: Format[Band] = new Format[Band] {
-    override def reads(json: JsValue): JsResult[Band] = {
-      val sBand = json.as[String]
-      try {
-        JsSuccess(apply(sBand))
-      }
-      catch {
-        case e: IllegalArgumentException => JsError(e.getMessage)
-      }
+case class Bands(bands: Seq[Band]) extends LazyLogging:
+  override def toString: String =
+    val stringWriter = new StringWriter(1000)
+    val writer: PrintWriter = new PrintWriter(stringWriter)
+    bands.foreach { band =>
+      writer.println(band.toString)
     }
+    writer.close()
+    stringWriter.toString
 
-    override def writes(band: Band): JsValue = {
-      JsString(s"${band.meter}: ${band.range.start}-${band.range.start}")
-    }
+object Bands:
+  def fromLines(lines: Seq[String]): Bands = {
+    val seq: Seq[Band] = lines.map(line => Band(line))
+    new Bands(
+      seq
+    )
   }
 
-//  val r: Regex = """(\d+):\s*(\d+)\.(\d+)-(\d+)\.(\d+)""".r
-end Band
+
 
