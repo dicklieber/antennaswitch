@@ -1,23 +1,36 @@
 package antennsw
 
-import scala.Console.in
+import org.scalatest.matchers.must.Matchers.mustBe
+import org.scalatest.prop.{TableDrivenPropertyChecks, TableFor2}
 
-class FrequencyTest extends AntennaSpec {
-  "Frequency" should {
-    "s2int" in {
-      Frequency("14.2") mustBe 14_200_000
-      Frequency("7.0") mustBe 7_000_000
-    }
+class FieldKeyToString extends AntennaSpec with TableDrivenPropertyChecks:
+  val mHz2Hz: TableFor2[String, Int] =
+    Table(
+      ("Mhz", "hz"), // First tuple defines column names
+      ("7.125", 7_125_000),
+      ("7", 7_000_000),
+      ("7.0", 7_000_000),
+      ("14.2", 14_200_000),
+      ("14.2", 14_200_000),
 
-    "int2s" in {
-      Frequency(14_200_000) mustBe ("14.2")
-    }
+    )
+  val hzToMhz: TableFor2[Int, String] =
+    Table(
+      ("hz", "Mhz"), // First tuple defines column names
+      (7_125_000, "7.125"),
+      (7_000_000, "7."),
+      (14_200_000, "14.2")
+    )
 
-    "round Trip" in {
-      val str = "10.123"
-      val hz = Frequency(str)
-      hz mustBe (10_123_000)
-      Frequency(hz) mustBe (str)
+  "Mhz to Hz" in {
+    forAll(mHz2Hz) { (mhz: String, hz: Int) =>
+      val n = Frequency(mhz)
+      n mustBe (hz)
     }
   }
-}
+  "Hz to MHz" in {
+    forAll(hzToMhz) { (hz: Int, mhz: String) =>
+      val str = Frequency(hz)
+      str mustBe (mhz)
+    }
+  }

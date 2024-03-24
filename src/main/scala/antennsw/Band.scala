@@ -1,33 +1,30 @@
 package antennsw
 
-import jdk.javadoc.internal.tool.Start
-import play.api.libs.json.{JsResult, JsString, JsSuccess, JsValue}
-
 import scala.util.matching.Regex
 
 /**
  *
- * @param meter e.g. 40 or 160
+ * @param bandName e.g. 40 or 160M
  * @param range start/end
  */
-case class Band(meter: Int, range: Range):
+case class Band(bandName: String, range: Range):
   override def toString: String =
     val sMhzStart = Frequency(range.start)
     val sMhzEnd = Frequency(range.end)
-    s"${meter}M: $sMhzStart-$sMhzEnd"
+    s"${bandName}: $sMhzStart-$sMhzEnd"
 
 object Band:
-  def apply(meter: Int, start: Int, end: Int): Band =
-    Band(meter, Range.Inclusive(start, end, 1))
+  def apply(bandName: String, start: Int, end: Int): Band =
+    Band(bandName, Range.Inclusive(start, end, 1))
 
   def apply(s: String): Band =
     s match
-      case r(meter, startMhz, endMHz) =>
+      case r(bandName, startMhz, endMHz) =>
         val start: Int = Frequency(startMhz)
         val end: Int = Frequency(endMHz)
-        Band(meter.toInt, start, end)
+        Band(bandName, start, end)
       case x =>
         throw new IllegalArgumentException(s"""Can't parse "$s"! Expecting something like "40M: 7.1-7.25"""")
 
 
-  val r: Regex = """(\d+)M:\s*([\d\.]+)-([\d\.]+)""".r
+  val r: Regex = """([\w ]+):\s*([\d.]+)-([\d.]+)""".r

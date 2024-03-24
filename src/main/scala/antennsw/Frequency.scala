@@ -1,6 +1,6 @@
 package antennsw
 
-import scala.language.{dynamics, postfixOps}
+import scala.language.{dynamics, existentials, postfixOps}
 
 object Frequency:
   /**
@@ -9,13 +9,24 @@ object Frequency:
    * @return hz
    */
   def apply(mhz: String): Int = {
-    val tokens = mhz.split('.')
-    val wholeMhz = tokens.head.toInt
-    val right: String = tokens(1)
-    val paddedFract = right.padTo(6, '0')
-    val fract: Int = paddedFract.toInt
-    val r: Int = wholeMhz * MEGA + fract
-    r
+    try
+      mhz match
+        case regex(whole, null) =>
+          println(whole)
+          whole.toInt * MEGA
+
+        case regex(whole, fraction) =>
+          println(whole)
+          val paddedFract = fraction.padTo(6, '0')
+          val fract: Int = paddedFract.toInt
+          whole.toInt * MEGA + fract
+
+        case x =>
+          throw new IllegalArgumentException(s"""Illformed MHz: "${mhz}"!""")
+
+    catch
+      case e: Exception =>
+        throw e
   }
 
   /**
@@ -33,4 +44,6 @@ object Frequency:
 
     result
 
-val MEGA = 1_000_000
+  private val regex = """(\d+).?(\d+)?""".r
+
+  private val MEGA = 1_000_000
