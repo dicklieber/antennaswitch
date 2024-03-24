@@ -17,8 +17,6 @@ object AntennSwitch extends JFXApp3 with LazyLogging{
   private val module = new MyModule()
   val injector: Injector = Guice.createInjector(module)
   private val allBindings: util.Map[Key[_], Binding[_]] = injector.getAllBindings
-  private val bands: Bands = injector.instance[Bands]
-  logger.info(bands.toString)
   def start(): Unit =
     stage = new JFXApp3.PrimaryStage {
       //    initStyle(StageStyle.Unified)

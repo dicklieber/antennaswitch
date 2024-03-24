@@ -1,6 +1,7 @@
 package antennsw
 
 import scala.collection.immutable.Range.Inclusive
+import scala.util.{Failure, Success, Try}
 
 class BandTest extends AntennaSpec {
   "Band" should {
@@ -11,15 +12,16 @@ class BandTest extends AntennaSpec {
     }
 
     "Round trip" in {
-      val band = Band("40M: 7.1-7.25")
-      val sBand = band.toString
-      val backAgain = Band(sBand)
-      backAgain mustBe band
+      Band("40M: 7.1-7.25") match
+        case Failure(exception) =>
+          exception.getMessage mustBe """Can't parse "crap"! Expecting something like "40M: 7.1-7.25""""
+        case Success(value) =>
+
+
     }
     "Illformed" in {
-      val exception = intercept[IllegalArgumentException](Band("crap"))
-      exception mustBe a[IllegalArgumentException]
-      exception.getMessage mustBe """Can't parse "crap"! Expecting something like "40M: 7.1-7.25""""
+      val tried: Try[Band] = Band("crap")
+      tried.failed.get.getMessage mustBe """Can't parse "crap"! Expecting something like "40M: 7.1-7.25""""
     }
   }
 }

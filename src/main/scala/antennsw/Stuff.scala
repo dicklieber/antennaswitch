@@ -6,7 +6,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.{BorderPane, HBox, VBox}
 @Singleton
-class Stuff @Inject()(bands: Bands) extends LazyLogging:
+class Stuff @Inject()(bandManager: BandManager) extends LazyLogging:
 // List for serial port messages
 // Find Band
 // Determine antenna
