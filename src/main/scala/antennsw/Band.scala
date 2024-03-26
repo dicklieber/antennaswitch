@@ -1,37 +1,42 @@
 package antennsw
 
+import antennsw.Band.BandName
 import antennsw.Pi4j.logger
-import ch.qos.logback.classic.spi.ILoggingEvent
-import com.typesafe.scalalogging.LazyLogging
+import com.typesafe.scalalogging.{LazyLogging, Logger}
 
-import scala.util.Try
 import scala.util.matching.Regex
 
 /**
  *
  * @param bandName e.g. 40 or 160M
- * @param range    start/end
+ * @param startMhz e.g. 14. 7.1 
+ * @param endMhz   e.g. 14.233
  */
-case class Band(bandName: String, range: Range):
+case class Band(bandName: BandName, startMhz: String, endMhz: String):
+  val range: Range = Range.inclusive(Frequency(startMhz), Frequency(endMhz), 1)
+
   override def toString: String =
-    val sMhzStart = Frequency(range.start)
-    val sMhzEnd = Frequency(range.end)
-    s"${bandName}: $sMhzStart-$sMhzEnd"
+    s"${bandName}: ${Frequency(range.start)}-${Frequency(range.end)}"
 
-object Band  extends LazyLogging:
-  def apply(bandName: String, start: Int, end: Int): Band =
-    Band(bandName, Range.Inclusive(start, end, 1))
-
-  def apply(s: String): Try[Band] =
-    Try(s match
+  def contains(hz: Int): Boolean =
+    range.contains(hz)
+    
+object Band extends LazyLogging:
+  /**
+   *
+   * @param str
+   * @return
+   */
+  @throws[IllegalArgumentException]
+  def apply(str: String): Band =
+    str match
       case r(bandName, startMhz, endMHz) =>
-        val start: Int = Frequency(startMhz)
-        val end: Int = Frequency(endMHz)
-          Band(bandName, start, end)
+        Band(bandName, startMhz, endMHz)
       case x =>
-        val value = s"""Can't parse "$s"! Expecting something like "40M: 7.1-7.25""""
-        logger.error(value) 
+        val value = s"""Can't parse "$str"! Expecting something like "40M: 7.1-7.25""""
+        logger.error(value)
         throw new IllegalArgumentException(value)
-    )
 
   val r: Regex = """([\w ]+):\s*([\d.]+)-([\d.]+)""".r
+
+  type BandName = String

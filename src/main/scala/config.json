@@ -1,0 +1,140 @@
+{
+  "bands": [
+    {
+      "bandName": "160",
+      "startMhz": "1.8",
+      "endMhz": "2"
+    },
+    {
+      "bandName": "80",
+      "startMhz": "3.5",
+      "endMhz": "4"
+    },
+    {
+      "bandName": "60",
+      "startMhz": "5.3",
+      "endMhz": "5.5"
+    },
+    {
+      "bandName": "40",
+      "startMhz": "7",
+      "endMhz": "7.3"
+    },
+    {
+      "bandName": "30",
+      "startMhz": "10.1",
+      "endMhz": "10.15"
+    },
+    {
+      "bandName": "20",
+      "startMhz": "14",
+      "endMhz": "14.35"
+    },
+    {
+      "bandName": "17",
+      "startMhz": "18",
+      "endMhz": "18.168"
+    },
+    {
+      "bandName": "15",
+      "startMhz": "21",
+      "endMhz": "21.45"
+    },
+    {
+      "bandName": "12",
+      "startMhz": "24",
+      "endMhz": "24.99"
+    },
+    {
+      "bandName": "10",
+      "startMhz": "28",
+      "endMhz": "29.7"
+    },
+    {
+      "bandName": "6",
+      "startMhz": "50",
+      "endMhz": "54"
+    },
+    {
+      "bandName": "2M",
+      "startMhz": "144",
+      "endMhz": "148"
+    },
+    {
+      "bandName": "1.25M",
+      "startMhz": "219",
+      "endMhz": "225"
+    },
+    {
+      "bandName": "70cm",
+      "startMhz": "420",
+      "endMhz": "450"
+    },
+    {
+      "bandName": "33cm",
+      "startMhz": "902",
+      "endMhz": "928"
+    }
+  ],
+  "antennas": [
+    {
+      "name": "MA6B",
+      "port": 1,
+      "bandNames": [
+        "20",
+        "17",
+        "15",
+        "12",
+        "6"
+      ]
+    },
+    {
+      "name": "EndFed",
+      "port": 2,
+      "bandNames": [
+        "160",
+        "80",
+        "40",
+        "30"
+      ]
+    },
+    {
+      "name": "Discone",
+      "port": 7,
+      "bandNames": [
+        "2M",
+        "1.25M",
+        "70cm",
+        "33cm"
+      ]
+    },
+    {
+      "name": "Log Periodic",
+      "port": 8,
+      "bandNames": [
+        "2M",
+        "1.25M",
+        "70cm",
+        "33cm"
+      ]
+    },
+    {
+      "name": "UHF/VHF Yagi",
+      "port": 6,
+      "bandNames": [
+        "2M",
+        "70cm"
+      ]
+    }
+  ],
+  "radios": [
+    {
+      "name": "Flex",
+      "port": "M"
+    },
+    {
+      "name": "IC-9700",
+      "port": "S"
+    }
+  ]
+}

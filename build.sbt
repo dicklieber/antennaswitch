@@ -16,6 +16,8 @@ libraryDependencies ++= Seq(
   "com.google.inject" % "guice" % "7.0.0",
   "net.codingwell" %% "scala-guice" % "7.0.0",
   "org.playframework" %% "play-json" % "3.0.2",
+  "com.beachape" %% "enumeratum" % "1.7.3",
+
   //  "com.pi4j" % "pi4j-core" % "1.4",
   //  "com.pi4j" % "pi4j-gpio-extension" % "1.3",
 
