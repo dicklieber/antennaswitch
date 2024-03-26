@@ -1,6 +1,0 @@
-2024-03-26 18:06:21 [39mTRACE[0;39m [36mantennsw.Frequency$[0;39m [35m[0;39m fractional whole: 7 fract:100000 result: 7100000
-2024-03-26 18:06:21 [39mTRACE[0;39m [36mantennsw.Frequency$[0;39m [35m[0;39m fractional whole: 7 fract:250000 result: 7250000
-2024-03-26 18:07:14 [1;31mERROR[0;39m [36mantennsw.Band$[0;39m [35m[0;39m Can't parse "crap"! Expecting something like "40M: 7.1-7.25"
-2024-03-26 18:08:50 [1;31mERROR[0;39m [36mantennsw.Band$[0;39m [35m[0;39m Can't parse "crap"! Expecting something like "40M: 7.1-7.25"
-2024-03-26 18:10:49 [1;31mERROR[0;39m [36mantennsw.Band$[0;39m [35m[0;39m Can't parse "crap"! Expecting something like "40M: 7.1-7.25"
-2024-03-26 18:11:26 [1;31mERROR[0;39m [36mantennsw.Band$[0;39m [35m[0;39m Can't parse "crap"! Expecting something like "40M: 7.1-7.25"
