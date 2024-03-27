@@ -12,4 +12,4 @@ case class Antenna(name: String, port: Int, bandNames: String *)
 
 object Antenna:
   implicit val fmtAntenna: Format[Antenna] = Json.format[Antenna]
-end Antenna
+

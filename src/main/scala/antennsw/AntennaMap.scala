@@ -3,6 +3,9 @@ package antennsw
 import com.typesafe.scalalogging.LazyLogging
 import jakarta.inject.*
 
+import scala.collection.concurrent.TrieMap
+import scala.collection.mutable
+
 /**
  * Maps [[Radio]]s to [[Antenna]] ports.
  *
@@ -10,13 +13,13 @@ import jakarta.inject.*
  */
 @Singleton
 class AntennaMap @Inject()(config: Config) extends LazyLogging:
-  private var antennaMap: Map[Antenna, Option[Radio]] =
-    val builder = Map.newBuilder[Antenna, Option[Radio]]
-    config.antennas.foreach { antenna =>
-      builder.addOne(antenna, None)
+  private var theMap: TrieMap[Radio, Option[Antenna]] = {
+    val builder = TrieMap.newBuilder[Radio, Option[Antenna]]
+    config.radios.foreach { radio =>
+      builder.addOne(radio, None)
     }
     builder.result()
-
+  }
   private val bandNames = config.bands.map(_.bandName)
   val errors: Seq[String] = for {
     antenna <- config.antennas
@@ -26,20 +29,12 @@ class AntennaMap @Inject()(config: Config) extends LazyLogging:
     s"""Band: "$bandName" in antenna: "${antenna.name}" (${antenna.port}) is not defined!"""
   }
 
-  def state: Seq[(Antenna, Option[Radio])] =
-    antennaMap
+  def state: Seq[(Radio, Option[Antenna])] =
+    theMap
       .toSeq
       .sortBy(_._1.port)
 
-  def switch(antenna: Antenna, radio: Radio): Unit =
-    val builder = Map.newBuilder[Antenna, Option[Radio]]
 
-    antennaMap.foreach { (a, current) =>
-      builder.addOne(
-        if (a == antenna)
-          antenna -> Option(radio)
-        else
-          antenna -> None
-      )
-    }
-    antennaMap = builder.result()
+  def switch(radio: Radio, antenna: Antenna): Unit =
+    theMap.put(radio, Option(antenna))
+

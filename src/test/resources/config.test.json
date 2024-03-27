@@ -3,7 +3,8 @@
     {
       "bandName": "160",
       "startMhz": "1.8",
-      "endMhz": "2"
+      "endMhz": "2",
+      "id": "ebe4877e-bfda-47ae-8459-f542fca3cc1e"
     },
     {
       "bandName": "80",
