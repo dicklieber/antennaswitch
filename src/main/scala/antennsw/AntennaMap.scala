@@ -29,12 +29,19 @@ class AntennaMap @Inject()(config: Config) extends LazyLogging:
     s"""Band: "$bandName" in antenna: "${antenna.name}" (${antenna.port}) is not defined!"""
   }
 
-  def state: Seq[(Radio, Option[Antenna])] =
+  def state: Seq[SwitchState] =
     theMap
       .toSeq
+      .map(entry => SwitchState(entry))
       .sortBy(_._1.port)
 
 
   def switch(radio: Radio, antenna: Antenna): Unit =
     theMap.put(radio, Option(antenna))
 
+case class SwitchState(radio: Radio, maybeAntenna: Option[Antenna]) extends Ordered[SwitchState]:
+  def compare(that: SwitchState): Int = radio.port compareTo that.radio.port
+
+object SwitchState:
+  def apply(entry: (Radio, Option[Antenna])): SwitchState =
+    SwitchState(entry._1, entry._2)
