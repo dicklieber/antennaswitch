@@ -30,31 +30,42 @@ class AntennaMapSpec extends WithConfigSpec {
       val anAntenna = antennas.head
 
       "change to a new antenna" in {
-        antennaMap.switch(radio1, antenna2)
-        antennaMap.switch(radio1, antenna1)
+        antennaMap.switch(SwitchState(radio1, antenna2))
+        antennaMap.switch(SwitchState(radio1, antenna1))
         val state: Seq[SwitchState] = antennaMap.state
-        checkDuplicateConnection(state)
       }
       "switch 2 radios to same antenna" in {
-        antennaMap.switch(radio1, antenna1)
-        antennaMap.switch(radio2, antenna1)
-        val state: Seq[SwitchState] = antennaMap.state
-        state must have length(2)
-        checkDuplicateConnection(state)
+        antennaMap.switch(SwitchState(radio1, antenna1))
+        val exception = intercept[RuleViolation](
+          antennaMap.switch(SwitchState(radio2, antenna1))
+        )
+        exception mustBe a[RuleViolation]
+        exception.getMessage mustBe  "Aleady a connection to antenna: Some(Antenna(EndFed,2,List(160, 80, 40, 30)))!"
+      }
+    }
+    "notify" when{
+      "Get notified" in {
+        val antennaMap = new AntennaMap(config)
+        var notification = Seq.empty[SwitchState]
+        antennaMap.listen{(newState:Seq[SwitchState]) =>
+          notification = newState
+        }
+        antennaMap.switch(SwitchState(radio1, antenna1))
+        notification.nonEmpty mustBe(true)
       }
     }
   }
 
-  def checkDuplicateConnection(state: Seq[SwitchState]):Unit =
-    state must have length (2)
-
-    val antennasInUse: Seq[Int] = (for{
-      switchState <- state
-      antenna <- switchState.maybeAntenna
-    }yield{
-      antenna.port
-    })
-    if( antennasInUse.length > 1)
-//      antennasInUse(0) must not equal(antennasInUse(1))
-      assert(antennasInUse(0) != antennasInUse(1), "Radio connected to multiple antennas!")
+  //  def checkDuplicateConnection(state: Seq[SwitchState]):Unit =
+  //    state must have length (2)
+  //
+  //    val antennasInUse: Seq[Int] = (for{
+  //      switchState <- state
+  //      antenna <- switchState.maybeAntenna
+  //    }yield{
+  //      antenna.port
+  //    })
+  //    if( antennasInUse.length > 1)
+  ////      antennasInUse(0) must not equal(antennasInUse(1))
+  //      assert(antennasInUse(0) != antennasInUse(1), "Radio connected to multiple antennas!")
 }

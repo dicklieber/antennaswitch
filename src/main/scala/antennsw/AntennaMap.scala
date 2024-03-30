@@ -8,11 +8,14 @@ import scala.collection.mutable
 
 /**
  * Maps [[Radio]]s to [[Antenna]] ports.
+ * Handles logic rules:
+ *  - [[Radio]] connected to zero or one [[Antenna]].
+ *  - [[Antenna]] connected to exactly one [[Radio]].
  *
  * @param config what the user can change.
  */
 @Singleton
-class AntennaMap @Inject()(config: Config) extends LazyLogging:
+class AntennaMap @Inject()(config: Config) extends Switcher with LazyLogging:
   private var theMap: TrieMap[Radio, Option[Antenna]] = {
     val builder = TrieMap.newBuilder[Radio, Option[Antenna]]
     config.radios.foreach { radio =>
@@ -35,13 +38,27 @@ class AntennaMap @Inject()(config: Config) extends LazyLogging:
       .map(entry => SwitchState(entry))
       .sortBy(_._1.port)
 
+  var listeners: List[Seq[SwitchState] => Unit ] = Nil
 
-  def switch(radio: Radio, antenna: Antenna): Unit =
-    theMap.put(radio, Option(antenna))
+  def listen(newState: Seq[SwitchState] => Unit) =
+    listeners ::= newState
 
-case class SwitchState(radio: Radio, maybeAntenna: Option[Antenna]) extends Ordered[SwitchState]:
-  def compare(that: SwitchState): Int = radio.port compareTo that.radio.port
+  def notify(ev: Seq[SwitchState]) = for (l <- listeners) l(ev)
 
-object SwitchState:
-  def apply(entry: (Radio, Option[Antenna])): SwitchState =
-    SwitchState(entry._1, entry._2)
+
+  def switch(switchState: SwitchState): Unit =
+    checkRules(switchState)
+    theMap.put(switchState.radio, switchState.maybeAntenna)
+
+  private def checkRules(candidate:SwitchState):Unit=
+    // Is another radio connected to this antenna?
+    for{
+      (radio, maybeAntenna) <- theMap
+
+      if radio != candidate.radio
+      antenna <- maybeAntenna
+      candidateAntenna <- candidate.maybeAntenna
+      if antenna == candidateAntenna
+    }yield{
+      throw new RuleViolation(candidate)
+    }

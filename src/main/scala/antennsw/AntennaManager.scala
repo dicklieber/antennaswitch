@@ -33,5 +33,5 @@ class AntennaManager(config: Config, antennaMap: AntennaMap):
         band: Band <- config.bands.find(_.contains(hz))
         antenna <- config.antennas.find(_.bandNames.contains(band.bandName))
       } {
-        antennaMap.switch(radio = radio, antenna = antenna)
+        antennaMap.switch(SwitchState(radio, Option(antenna)))
       }
