@@ -15,7 +15,7 @@ extension (sc: StringContext)
     result
   }
 
-case class Relay(off: Array[Byte], on: Array[Byte]):
+case class Relay(on: Array[Byte], off: Array[Byte]):
   def a2s(array: Array[Byte]):String =
     array.map{b =>
         val r: String = (b.toInt & 0xff)
@@ -38,7 +38,7 @@ object UsbCh341 {
     //      FE0100200000FF
     Relay(x"FE0100200000FF", x"FE0100000010F1"), // status & status return
     //      FE0500000000FD
-    Relay(x"FE0500000000FD", x"FE050000FF00FE"), // channel-1
+    Relay(x"A00101A2", x"A00100A1"), // channel-1
     Relay(x"FE0500010000FC", x"FE050001FF00FD"), // channel-2
     Relay(x"FE0500020000FB", x"FE050002FF00FC"), // channel-3
     Relay(x"FE0500030000FA", x"FE050003FF00FB"), // channel-4

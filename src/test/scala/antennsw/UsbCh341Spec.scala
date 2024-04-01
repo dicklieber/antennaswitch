@@ -15,13 +15,13 @@ class UsbCh341Spec extends AntennaSpec {
     }
 
 
-    "all On" in {
+    "1 on off" in {
       val commPorts: Array[SerialPort] = SerialPort.getCommPorts
       commPorts.foreach { serialPort =>
         println(s"${serialPort.getSystemPortName} ${serialPort.toString}")
       }
       //    val maybePort: Option[SerialPort] = commPorts.find(_.getSystemPortName == "tty.usbserial-A4002DNF")
-      val maybePort: Option[SerialPort] = commPorts.find(_.getSystemPortName == "cu.wchusbserial111240")
+      val maybePort: Option[SerialPort] = commPorts.find(_.getSystemPortName == "cu.usbserial-111240")
       //    val maybePort: Option[SerialPort] = commPorts.find(_.toString.contains("FIFO"))
       val fifoPort: SerialPort = maybePort.get
 
@@ -36,12 +36,12 @@ class UsbCh341Spec extends AntennaSpec {
 
       val outputStream: OutputStream = fifoPort.getOutputStream
 
-      val relay = usbrelay(0)
+      val relay = usbrelay(1)
       println(relay)
-      outputStream.write(crlf(relay.on))
+      outputStream.write(relay.on)
       outputStream.flush()
       Thread.sleep(1000)
-      outputStream.write(crlf(relay.off))
+      outputStream.write(relay.off)
       outputStream.flush()
       outputStream.close()
       fifoPort.closePort()
