@@ -4,7 +4,6 @@ import com.typesafe.scalalogging.LazyLogging
 import jakarta.inject.*
 
 import scala.collection.concurrent.TrieMap
-import scala.collection.mutable
 
 /**
  * Maps [[Radio]]s to [[Antenna]] ports.
@@ -49,6 +48,7 @@ class AntennaMap @Inject()(config: Config) extends Switcher with LazyLogging:
   def switch(switchState: SwitchState): Unit =
     checkRules(switchState)
     theMap.put(switchState.radio, switchState.maybeAntenna)
+    notify(state)
 
   private def checkRules(candidate:SwitchState):Unit=
     // Is another radio connected to this antenna?

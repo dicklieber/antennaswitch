@@ -1,21 +1,21 @@
 package antennsw
 
-import antennsw.Relay.crlf
-import antennsw.UsbCh341.usbrelay
+import antennsw.relay.{Relay, UsbCh341}
 import com.fazecast.jSerialComm.SerialPort
 
 import java.io.OutputStream
 
 class UsbCh341Spec extends AntennaSpec {
-
   "UsbCh341" should {
-    "usbrelay" in {
-      val usbrelay: Seq[Relay] = UsbCh341.usbrelay
-      usbrelay
+    "define relay" when{
+      "relay 1" in {
+        UsbCh341.relay(1).toString mustBe("1 on: 0xa0, 0x01, 0x01, 0xa2 off: 0xa0, 0x01, 0x00, 0xa1")
+      }
     }
 
 
-    "1 on off" in {
+
+/*    "1 on off" in {
       val commPorts: Array[SerialPort] = SerialPort.getCommPorts
       commPorts.foreach { serialPort =>
         println(s"${serialPort.getSystemPortName} ${serialPort.toString}")
@@ -36,7 +36,7 @@ class UsbCh341Spec extends AntennaSpec {
 
       val outputStream: OutputStream = fifoPort.getOutputStream
 
-      val relay = usbrelay(1)
+      var relay = usbrelay(1)
       println(relay)
       outputStream.write(relay.on)
       outputStream.flush()
@@ -46,7 +46,16 @@ class UsbCh341Spec extends AntennaSpec {
       outputStream.close()
       fifoPort.closePort()
       print('.')
-
+      relay = usbrelay(2)
+      println(relay)
+      outputStream.write(relay.on)
+      outputStream.flush()
+      Thread.sleep(1000)
+      outputStream.write(relay.off)
+      outputStream.flush()
+      outputStream.close()
+      fifoPort.closePort()
+      print('.')
     }
-  }
+*/  }
 }

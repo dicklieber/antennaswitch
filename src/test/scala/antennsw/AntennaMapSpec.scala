@@ -46,26 +46,21 @@ class AntennaMapSpec extends WithConfigSpec {
     "notify" when{
       "Get notified" in {
         val antennaMap = new AntennaMap(config)
-        var notification = Seq.empty[SwitchState]
+        var notification: Seq[SwitchState] = Seq.empty
         antennaMap.listen{(newState:Seq[SwitchState]) =>
+          println(newState)
           notification = newState
         }
         antennaMap.switch(SwitchState(radio1, antenna1))
         notification.nonEmpty mustBe(true)
+        val st0: SwitchState = notification(0)
+        st0.radio mustBe(radio1)
+        st0.maybeAntenna mustBe Option(antenna1)
+
+        val st1: SwitchState = notification(1)
+        st1.radio mustBe(radio2)
+        st1.maybeAntenna mustBe None
       }
     }
   }
-
-  //  def checkDuplicateConnection(state: Seq[SwitchState]):Unit =
-  //    state must have length (2)
-  //
-  //    val antennasInUse: Seq[Int] = (for{
-  //      switchState <- state
-  //      antenna <- switchState.maybeAntenna
-  //    }yield{
-  //      antenna.port
-  //    })
-  //    if( antennasInUse.length > 1)
-  ////      antennasInUse(0) must not equal(antennasInUse(1))
-  //      assert(antennasInUse(0) != antennasInUse(1), "Radio connected to multiple antennas!")
 }

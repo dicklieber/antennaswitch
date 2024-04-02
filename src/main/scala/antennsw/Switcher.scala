@@ -1,7 +1,7 @@
 package antennsw
 
 trait Switcher:
-  @throws [RuleViolation] ("If thids connection would violate rules.")
+  @throws [RuleViolation] ("If this connection would violate rules.")
   def switch(switchState: SwitchState): Unit
 
 case class SwitchState(radio: Radio, maybeAntenna: Option[Antenna]) extends Ordered[SwitchState]:
