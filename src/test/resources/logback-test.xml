@@ -34,6 +34,7 @@
   <logger name="application" level="DEBUG" />
 
   <logger name="antennsw.Frequency" level="INFO" />
+  <logger name="antennsw.relay.Relay" level="TRACE" />
 
   <root level="INFO">
     <appender-ref ref="ASYNCFILE" />

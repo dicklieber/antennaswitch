@@ -1,9 +1,16 @@
-package antennsw.relay
+package antennsw.relay.usb
 
-import scala.annotation.unused
-import scala.language.postfixOps
+import antennsw.relay.{Relay, RelayBoard}
 
 object UsbCh341:
+  lazy val relayBoard: RelayBoard = RelayBoardUsb("UsbCh341",
+    for {
+      rn <- 1 to 16
+    } yield {
+      relay(rn)
+    }
+  )
+
   private val prefix = 0xA0.toByte
 
   /**
