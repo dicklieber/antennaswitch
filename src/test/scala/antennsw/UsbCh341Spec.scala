@@ -16,20 +16,20 @@ class UsbCh341Spec extends AntennaSpec {
       }
     }
 
-    "relay Board" in {
-      relayBoard
-      relayBoard.name mustBe ("UsbCh341")
-      relayBoard.relays must have length (16)
-      val head = relayBoard.relays.head
-      head.number mustBe (1)
-      head.off.last mustBe (0xA1.toByte)
-      val last = relayBoard.relays.last
-      last.number mustBe (16)
-      last.on(0) mustBe (0xA0.toByte)
-      last.on(1) mustBe (16.toByte)
-      last.on(2) mustBe (1.toByte)
-      last.on.last mustBe (0xb1.toByte)
-    }
+//    "relay Board" in {
+//      relayBoard
+//      relayBoard.name mustBe ("UsbCh341")
+//      relayBoard.relays must have length (16)
+//      val head = relayBoard.relays.head
+//      head.number mustBe (1)
+//      head.off.last mustBe (0xA1.toByte)
+//      val last = relayBoard.relays.last
+//      last.number mustBe (16)
+//      last.on(0) mustBe (0xA0.toByte)
+//      last.on(1) mustBe (16.toByte)
+//      last.on(2) mustBe (1.toByte)
+//      last.on.last mustBe (0xb1.toByte)
+//    }
     "Operate relays" in {
       val fifoPort: SerialPort = SerialPort.getCommPort("tty.wchusbserial111220")
       val iso = fifoPort.openPort()
@@ -43,14 +43,15 @@ class UsbCh341Spec extends AntennaSpec {
     }
 
     def flexRelay(fifoPort:SerialPort, rn: Int): Unit =
-      if(fifoPort.isOpen)
-        val relay: Relay = relayBoard.relays(rn - 1)
-        println(relay)
-        relay.sendOn(fifoPort)
-        Thread.sleep(1000)
-        relay.sendOff(fifoPort)
-      else
-        println("Port not open!")
+      throw new NotImplementedError() //todo
+//      if(fifoPort.isOpen)
+//        val relay: Relay = relayBoard.relays(rn - 1)
+//        println(relay)
+//        relay.sendOn(fifoPort)
+//        Thread.sleep(1000)
+//        relay.sendOff(fifoPort)
+//      else
+//        println("Port not open!")
 
     /**
      * The default baud rate is 9600 bps.

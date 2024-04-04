@@ -1,5 +1,6 @@
 package antennsw.relay
 
+import antennsw.{Radio, SwitchState}
 import antennsw.relay.Relay
 
 abstract class RelayBoard extends AutoCloseable:
@@ -9,7 +10,6 @@ abstract class RelayBoard extends AutoCloseable:
   def close: Unit =
     throw new NotImplementedError() //todo
     
-  def write(bytes: Array[Byte]): Array[Byte]
+  def switch(switchState: SwitchState):Unit
 
   val name: String
-  val relays: Seq[Relay]

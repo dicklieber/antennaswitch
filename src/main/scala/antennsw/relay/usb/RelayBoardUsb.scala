@@ -1,10 +1,12 @@
 package antennsw.relay.usb
 
+import antennsw.SwitchState
 import antennsw.relay.{Relay, RelayBoard}
 
 case class RelayBoardUsb(name:String, relays:Seq[Relay]) extends RelayBoard{
 
-
-  def write(bytes: Array[Byte]): Array[Byte] =
+  def switch(switchState: SwitchState): Unit =
     throw new NotImplementedError() //todo
+
+ //todo
 }

@@ -28,7 +28,7 @@ class AntennaMap @Inject()(config: Config) extends Switcher with LazyLogging:
     bandName <- antenna.bandNames
     if !bandNames.contains(bandName)
   } yield {
-    s"""Band: "$bandName" in antenna: "${antenna.name}" (${antenna.port}) is not defined!"""
+    s"""Band: "$bandName" in antenna: "${antenna.name}" (${antenna.relayNumber}) is not defined!"""
   }
 
   def state: Seq[SwitchState] =
