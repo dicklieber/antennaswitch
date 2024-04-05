@@ -22,21 +22,23 @@ public class P4jPlay {
 
         var led = pi4j.digitalOutput().create(PIN_LED);
 
-        led.high()
-        Thread.sleep(250);
-        led.low()
-        Thread.sleep(1000);
-
-
-
-
-
-
-        if (led.state() == DigitalState.HIGH) {
-            led.low();
-        } else {
-            led.high();
+        try {
+            while (true) {
+                led.high();
+                Thread.sleep(250);
+                led.low();
+                Thread.sleep(1000);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
+
+//        if (led.state() == DigitalState.HIGH) {
+//            led.low();
+//        } else {
+//            led.high();
+//        }
 //        Thread.sleep(500 / (pressCount + 1));
     }
 
