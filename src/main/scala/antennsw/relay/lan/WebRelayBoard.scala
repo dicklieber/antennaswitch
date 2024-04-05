@@ -10,7 +10,7 @@ import java.net.http.HttpClient.{Redirect, Version}
 import java.net.http.HttpResponse.BodyHandlers
 import java.time.Duration
 
-case class WebRelay(name: String, ipAddress: String) extends RelayBoard with LazyLogging:
+case class WebRelayBoard(name: String, ipAddress: String) extends RelayBoard with LazyLogging:
   val client: HttpClient = HttpClient.newBuilder()
     .version(Version.HTTP_1_1)
     .followRedirects(Redirect.NEVER)

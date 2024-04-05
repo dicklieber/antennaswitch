@@ -9,11 +9,11 @@ class WebRelaySpec extends AntennaSpec {
   val radio2 = Radio("r2", "S")
   "WebRelaySpec" should {
     "switch1" in {
-      val webRelay = WebRelay("8relay", "192.168.1.4")
+      val webRelay = WebRelayBoard("8relay", "192.168.1.4")
       webRelay.switch(SwitchState(radio1, antenna1))
     }
     "sweep" in {
-      val webRelay = WebRelay("8relay", "192.168.1.4")
+      val webRelay = WebRelayBoard("8relay", "192.168.1.4")
       for(rn <- 1 to 8){
         webRelay.switch(SwitchState(radio1, Antenna("", rn)))
       }
